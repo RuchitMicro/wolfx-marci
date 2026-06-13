@@ -1,0 +1,32 @@
+{% comment %}
+Single page dashboard — four zones.
+HTMX polls partials every 5 seconds.
+TODO: implement full template with Poppins font, dark theme, 4-zone grid layout.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>wolfx-marci — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        /* TODO: implement 4-zone grid layout */
+        body { font-family: 'Poppins', sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+    <div id="zone-health"   hx-get="{% url 'dashboard-health' %}"   hx-trigger="every 5s" hx-swap="innerHTML">
+        {% include 'dashboard/partials/system_health.html' %}
+    </div>
+    <div id="zone-agents"   hx-get="{% url 'dashboard-agents' %}"   hx-trigger="every 5s" hx-swap="innerHTML">
+        {% include 'dashboard/partials/agent_status.html' %}
+    </div>
+    <div id="zone-costs"    hx-get="{% url 'dashboard-costs' %}"    hx-trigger="every 5s" hx-swap="innerHTML">
+        {% include 'dashboard/partials/costs.html' %}
+    </div>
+    <div id="zone-log"      hx-get="{% url 'dashboard-live-log' %}" hx-trigger="every 5s" hx-swap="innerHTML">
+        {% include 'dashboard/partials/live_log.html' %}
+    </div>
+</body>
+</html>

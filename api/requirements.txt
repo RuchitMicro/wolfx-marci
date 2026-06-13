@@ -1,0 +1,15 @@
+Django==4.2.7
+django-cleanup
+django-unfold
+django-cors-headers
+django-debug-toolbar
+django-filter
+django-tinymce
+django-import-export
+django-model-utils
+django-simple-history
+djangorestframework
+djangorestframework-simplejwt
+gunicorn
+Pillow
+pandas
