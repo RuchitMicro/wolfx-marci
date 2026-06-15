@@ -37,14 +37,14 @@ class AgentState(TypedDict):
     Clean, inspectable, serialisable.
     Passed by reference — nodes mutate and return it.
     """
-    messages:       list        # Full conversation including tool results
-    sender:         str         # Raw sender phone number
-    sender_name:    str         # Resolved display name (stub → phone number for now)
-    intent:         str         # Classified intent (stub → 'general' for now)
-    context:        str         # Pre-composed memory context (stub → '' for now)
-    channel_id:     str         # Which channel this came from
-    iterations:     int         # How many tool call cycles have happened
-    final_reply:    str         # Populated when agent is done
+    messages        :   list        # Full conversation including tool results
+    sender          :   str         # Raw sender phone number
+    sender_name     :   str         # Resolved display name (stub → phone number for now)
+    intent          :   str         # Classified intent (stub → 'general' for now)
+    context         :   str         # Pre-composed memory context (stub → '' for now)
+    channel_id      :   str         # Which channel this came from
+    iterations      :   int         # How many tool call cycles have happened
+    final_reply     :   str         # Populated when agent is done
 
 
 # ── BaseAgent ────────────────────────────────────────────────────────────────
@@ -130,6 +130,7 @@ class BaseAgent:
                 context     = context,
                 sender_name = sender_name,
                 intent      = intent,
+                channel_id  = channel_binding.channel_id,
             )
         except Exception as exc:
             logger.exception(f'[{self.config.name}] handle() error: {exc}')
@@ -148,21 +149,21 @@ class BaseAgent:
 
     # ── Subagent Interface ────────────────────────────────────────────────────
 
-    def handle(self, message: str, context: str, sender_name: str, intent: str) -> str:
+    def handle(self, message: str, context: str, sender_name: str, intent: str, channel_id: str) -> str:
         """
         Override in subagents for custom routing logic.
         Default implementation runs run_graph() directly.
         """
-        return self.run_graph(message, context, sender_name, intent)
+        return self.run_graph(message, context, sender_name, intent, channel_id)
 
     # ── LangGraph Execution ───────────────────────────────────────────────────
 
-    def run_graph(self, message: str, context: str, sender_name: str, intent: str) -> str:
+    def run_graph(self, message: str, context: str, sender_name: str, intent: str, channel_id: str) -> str:
         """
         Executes the LangGraph ReAct loop.
         Builds initial state, runs the graph, extracts final reply.
         """
-        thread_id = f'{self.agent_type}:{sender_name}'
+        thread_id = f'{self.agent_type}:{channel_id}:{sender_name}'
 
         initial_state: AgentState = {
             'messages':     [HumanMessage(content=message)],
@@ -170,7 +171,7 @@ class BaseAgent:
             'sender_name':  sender_name,
             'intent':       intent,
             'context':      context,
-            'channel_id':   '',
+            'channel_id':   channel_id,
             'iterations':   0,
             'final_reply':  '',
         }

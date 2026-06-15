@@ -21,7 +21,12 @@ from django.conf                import settings # static file config
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/',          admin.site.urls),
+    path('api/',            include('api.urls')),
+    path('config/',         include('config.urls')),
+    path('memory/',         include('memory.urls')),
+    path('budget/',         include('budget.urls')),
+    path('dashboard/',      include('dashboard.urls')),
     path('',include('api.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) # static file config

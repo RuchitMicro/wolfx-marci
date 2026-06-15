@@ -17,6 +17,11 @@ class ChannelBinding(models.Model):
     agent           = models.ForeignKey(AgentConfig, on_delete=models.CASCADE, related_name='channel_bindings')
     bot_number      = models.CharField(max_length=50, help_text='Bot number used to detect @mentions.')
     api_base        = models.CharField(max_length=200, help_text='MCP server base URL for this channel.')
+    api_key = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text='API key for the MCP server. e.g. wweb-mcp Bearer token.'
+    )
     is_active       = models.BooleanField(default=True)
     created_at      = models.DateTimeField(auto_now_add=True)
     updated_at      = models.DateTimeField(auto_now=True)
