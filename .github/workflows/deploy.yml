@@ -1,0 +1,16 @@
+name: Deploy wolfx-marci to Zeus
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, zeus]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run deploy script
+        run: /home/wolfx-zeus/actions-runner/deploy.sh
