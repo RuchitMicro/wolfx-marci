@@ -109,7 +109,7 @@ class WhatsAppQRView(View):
             <style>
                 body {{ font-family: sans-serif; display: flex; flex-direction: column;
                         align-items: center; justify-content: center; height: 100vh;
-                        background: #000; color: #fff; margin: 0; }}
+                        background: #fff; color: #000; margin: 0; }}
                 h2 {{ margin-bottom: 10px; }}
                 p {{ color: #aaa; font-size: 13px; }}
             </style>
